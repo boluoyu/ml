@@ -1,3 +1,0 @@
-model_checkpoint_path: "/Users/jnewman/Projects/Banjo/ml/ml/image/model/fire_flood_v1/convnet_tensorflow_64x64x3_0.0.01_mse_adam_1518321079.606343/convnet_tensorflow_64x64x3_0.0.01_mse_adam_tensorflow_image_1_2_chkpt.hdf5"
-all_model_checkpoint_paths: "/Users/jnewman/Projects/Banjo/ml/ml/image/model/fire_flood_v1/convnet_tensorflow_64x64x3_0.0.01_mse_adam_1518321079.606343/convnet_tensorflow_64x64x3_0.0.01_mse_adam_tensorflow_image_1_1_chkpt.hdf5"
-all_model_checkpoint_paths: "/Users/jnewman/Projects/Banjo/ml/ml/image/model/fire_flood_v1/convnet_tensorflow_64x64x3_0.0.01_mse_adam_1518321079.606343/convnet_tensorflow_64x64x3_0.0.01_mse_adam_tensorflow_image_1_2_chkpt.hdf5"
