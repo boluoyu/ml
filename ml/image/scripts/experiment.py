@@ -1,16 +1,15 @@
 from argparse import ArgumentParser
 
-from ml.image.classifier.registry import CLASSIFIER_REGISTRY
+from ml.common.evaluator.registry import EVALUATOR_REGISTRY
+from ml.common.helper.data_generator import DataGenerator
 from ml.image.experiment.registry import EXPERIMENT_REGISTRY
-from ml.image.evaluator.registry import EVALUATOR_REGISTRY
-from ml.image.transform.registry import TRANSFORMER_REGISTRY
-from ml.image.helper.data import DataGenerator
+from ml.image.classifier.registry import CLASSIFIER_REGISTRY
 from ml.image.service.load import ImageLoader
+from ml.image.transformer.registry import TRANSFORMER_REGISTRY
 
 
-def main(experiment_name, classifier_name, transformer_name, evaluator_name, model_dir, training_data_file_path,
+def main(experiment_name, class_map_file_path, classifier_name, transformer_name, evaluator_name, model_dir, training_data_file_path,
          validation_file_path, batch_size, num_epochs, checkpoint_step_num, validation_step_num, num_steps, verbose):
-
     classifier_cls = CLASSIFIER_REGISTRY[classifier_name]
     evaluator_cls = EVALUATOR_REGISTRY[evaluator_name]
     experiment_cls = EXPERIMENT_REGISTRY[experiment_name]
@@ -23,6 +22,7 @@ def main(experiment_name, classifier_name, transformer_name, evaluator_name, mod
     )
 
     experiment = experiment_cls(
+        class_map_file_path=class_map_file_path,
         classifier_cls=classifier_cls,
         transformer_cls=transformer_cls,
         evaluator_cls=evaluator_cls,
@@ -46,6 +46,7 @@ if __name__ == '__main__':
     parser.add_argument('--transformer_name', required=True)
     parser.add_argument('--evaluator_name', required=True)
     parser.add_argument('--model_dir', required=True)
+    parser.add_argument('--class_map_file_path', required=True)
     parser.add_argument('--training_data_file_path', required=True)
     parser.add_argument('--validation_data_file_path', required=True)
     parser.add_argument('--batch_size', required=True, type=int)
@@ -58,6 +59,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(
+        class_map_file_path=args.class_map_file_path,
         experiment_name=args.experiment_name,
         classifier_name=args.classifier_name,
         evaluator_name=args.evaluator_name,

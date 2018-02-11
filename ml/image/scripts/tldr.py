@@ -1,45 +1,21 @@
 import logging
 import os
-
 from argparse import ArgumentParser
+
 from ds_common.interfaces.tldr import BanjoTLDRService
+from ds_common.samples import SAMPLE_TYPE_ENUM_IMAGE
 from requests import Session
 
-from ml.image.extractor.tldr import TLDRExtractor
-from ml.image.preparer.tldr import TLDRPreparer
+from ml.common.helper.class_map import ClassMapHelper
+from ml.common.extractor.tldr import TLDRExtractor
+from ml.common.utils.auth import get_banjo_session
+from ml.image.preparer.tldr import TLDRImagePreparer
 from ml.image.service.download import MediaDownloader
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 CURATION_TYPE_ENUM_POSITIVE = 1
-
-
-def add_x509_headers(headers):
-    crt = os.environ['APICERTIFICATE']
-    crt_scheme = os.environ['APISCHEME']
-
-    headers.update(
-        {
-            'X-Banjo-X509-Scheme': crt_scheme,
-            'X-SSL-AUTH': crt,
-            'Content-Type': 'application/json',
-            'Content-Language': 'en'
-        }
-    )
-
-    return headers
-
-
-def get_class_map():
-    return {'fire': 0, 'flood': 1}
-
-
-def get_banjo_session():
-    session = Session()
-    x509_headers = add_x509_headers({})
-    session.headers.update(x509_headers)
-    return session
 
 
 def make_dir(dir_path):
@@ -51,17 +27,20 @@ def main(training_data_directory, download_directory, categories):
     make_dir(training_data_directory)
     make_dir(download_directory)
 
+    class_map_helper = ClassMapHelper()
+    class_map = class_map_helper.generate_class_map(categories)
+
     downloader = MediaDownloader(download_directory=download_directory, session=Session())
     tldr = BanjoTLDRService(hostname=os.environ['TLDR_HOSTNAME'], session=get_banjo_session())
 
-    extractor = TLDRExtractor(tldr=tldr, output_dir=training_data_directory)
+    extractor = TLDRExtractor(tldr=tldr, output_dir=training_data_directory, sample_type_enum=SAMPLE_TYPE_ENUM_IMAGE)
     extractor_file_path = extractor.extract(categories)
 
-    preparer = TLDRPreparer(
-        downloader=downloader,
+    preparer = TLDRImagePreparer(
         in_data_file_path=extractor_file_path,
         output_dir=training_data_directory,
-        class_map=get_class_map()
+        downloader=downloader,
+        class_map=class_map
     )
     preparer_file_path = preparer.prepare()
 

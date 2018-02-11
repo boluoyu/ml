@@ -1,7 +1,7 @@
-from ml.image.classifier.keras import KerasClassifier
-from ml.image.classifier.tensorflow import TensorflowClassifier
+from ml.image.classifier.keras import ImageKerasClassifier
+from ml.image.classifier.tensorflow import ImageTensorflowClassifier
 
 CLASSIFIER_REGISTRY = {
-    KerasClassifier.name: KerasClassifier,
-    TensorflowClassifier.name: TensorflowClassifier
+    ImageKerasClassifier.name:      ImageKerasClassifier,
+    ImageTensorflowClassifier.name: ImageTensorflowClassifier
 }

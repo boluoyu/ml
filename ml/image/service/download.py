@@ -36,10 +36,13 @@ class MediaDownloader:
     def download_data_to_disk(self, media_url):
         content = self._get_content(media_url)
         identifier = basename(media_url)
-        file_name = self._get_file_name(identifier)
+        file_name = self._get_file_name(identifier=identifier)
 
         if not os.path.exists(file_name):
+            logger.info('Downloading media to file %s', file_name)
             file_name = self.write_data_to_disk(content, identifier=identifier)
+        else:
+            logger.info('Skipping over already downloaded media at %s', file_name)
 
         return file_name
 
@@ -47,7 +50,7 @@ class MediaDownloader:
         if not isinstance(content, bytes):
             content = bytes(content, 'utf-8')
 
-        file_name = self._get_file_name(identifier)
+        file_name = self._get_file_name(identifier=identifier)
 
         with open(file_name, 'wb') as f:
             f.write(content)

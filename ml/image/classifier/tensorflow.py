@@ -1,31 +1,12 @@
-import tensorflow as tf
-
-from ml.image.classifier.base import Classifier
+from ml.common.classifier.tensorflow import TensorflowClassifier
 
 
-class TensorflowClassifier(Classifier):
-    name = 'tensorflow'
+class ImageTensorflowClassifier(TensorflowClassifier):
+    name = 'tensorflow_image'
 
-    def __init__(self, transformer, model=None, model_file_path=None):
-        super(TensorflowClassifier, self).__init__(transformer, model, model_file_path)
+    def __init__(self, transformer, width, height, num_channels, model=None, model_file_path=None):
+        self.width = width
+        self.height = height
+        self.num_channels = num_channels
 
-        tf.reset_default_graph()
-        self.session = tf.Session()
-
-    def load(self, model_file_path):
-        self.initialize_graph()
-        self._initialize_saver()
-        self.saver.restore(self.session, model_file_path)
-
-    def _initialize_saver(self):
-        self.saver = tf.train.Saver()
-
-    def initialize_graph(self):
-        pass
-
-    def fit(self, X, y, **kwargs):
-        self.model.fit(X, y, **kwargs)
-
-    def predict(self, x):
-        raise NotImplementedError()
-
+        super().__init__(transformer, model, model_file_path)
