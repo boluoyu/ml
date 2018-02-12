@@ -1,45 +1,18 @@
+import logging
 import numpy as np
 
-from collections import deque
+from ml.reinforcement.agent.ml import MLAgent
 
-from ml.reinforcement.agent.base import Agent
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-class QLearningAgent(Agent):
-    def __init__(self, actions, observation_shape, epsilon, epsilon_min, epsilon_decay, gamma, batch_size,
-                 env_history_size, classifier, verbose=True):
+class QLearningAgent(MLAgent):
+    name = 'qlearning_agent'
 
-        super(QLearningAgent, self).__init__()
-
-        self.env_history = deque(maxlen=env_history_size)
-        self.epsilon = epsilon
-        self.epsilon_min = epsilon_min
-        self.epsilon_decay = epsilon_decay
-        self.gamma = gamma
-        self.actions = actions
-        self.observation_shape = observation_shape
-        self.action_size = len(actions)
-        self.classifier = classifier
-
-        self._verbose = verbose
-        self.batch_size = batch_size
-
-    def get_action(self, action, current_observation, previous_observation, reward, done, info):
-        random_decimal = np.random.rand()
-
-        if random_decimal <= self.epsilon:
-            action = self.actions.sample()
-        else:
-            action = self.predict(current_observation)
-
-        return action
-
-    def predict(self, observation):
-        predictions = self.classifier.predict(X=observation)
-        prediction = predictions[0]
-        return np.argmax(prediction)
-
-    def train(self, env_state_mini_batch):
+    def fit(self, env_state_mini_batch):
+        X = []
+        y = []
         for env_state in env_state_mini_batch:
             observation = env_state['observation']
             action = env_state['action']
@@ -51,18 +24,19 @@ class QLearningAgent(Agent):
                 target = reward
             else:
                 target = (reward + self.gamma *
-                          np.amax(self.classifier.predict(next_observation)[0]))
+                          np.amax(self.classifier.predict(X=[next_observation])[0])) # discounted max future reward for the next state (Bellman EQ)
 
-            future_discounted_reward = self._predict_future_discounted_reward(observation, target, action)
-            self.classifier.fit(observation, future_discounted_reward, epochs=1, verbose=0)
+            target_future_discounted_reward = self._get_current_state_mapped_to_future_discounted_reward(observation, target, action)
+            X.append(observation)
+            y.append(target_future_discounted_reward)
 
-        self._update_epsilon()
+        X = np.array(X)
+        y = np.array(y)
+        self.classifier.fit(X=X, y=y, epochs=1, verbose=0)
+        self.update_epsilon()
+        logger.info('Finished training, updated epsilon %s threshold %s', self.epsilon, self.epsilon_min)
 
-    def _predict_future_discounted_reward(self, observation, target, action):
-        target_future_discounted_rewards = self.classifier.predict(x=observation)
-        target_future_discounted_rewards[0][action] = target
+    def _get_current_state_mapped_to_future_discounted_reward(self, observation, target, action):
+        target_future_discounted_rewards = self.classifier.predict(X=[observation])[0]
+        target_future_discounted_rewards[action] = target
         return target_future_discounted_rewards
-
-    def _update_epsilon(self):
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay

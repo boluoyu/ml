@@ -5,6 +5,9 @@ class Agent:
     def __init__(self):
         self.reset_reward()
 
+    def initialize(self):
+        self.reset()
+
     @abstractmethod
     def get_action(self, action, current_observation, previous_observation, reward, done, info):
         raise NotImplementedError
