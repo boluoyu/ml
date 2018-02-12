@@ -13,20 +13,20 @@ class KerasClassifier(Classifier):
         keras.models.save_model(self.model, model_file_path, overwrite=True)
 
     def fit(self, X, y, **kwargs):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
         y = self.format_y(y)
         model_history = self.model.fit(X, y, **kwargs)
         return model_history.history['loss'][-1]
 
     def compute_loss(self, X, y):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
         y = self.format_y(y)
         return self.model.evaluate(X, y)
 
     def predict(self, X):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
         predictions = self.model.predict(X)
         return predictions

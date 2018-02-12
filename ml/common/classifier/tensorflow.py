@@ -26,7 +26,7 @@ class TensorflowClassifier(Classifier):
         self.model.saver.save(self.model.session, model_file_path)
 
     def fit(self, X, y, **kwargs):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
         y = self.format_y(y)
 
@@ -41,7 +41,7 @@ class TensorflowClassifier(Classifier):
         return loss
 
     def predict(self, X):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
 
         predictions = self.model.session.run(
@@ -54,7 +54,7 @@ class TensorflowClassifier(Classifier):
         return predictions[0]
 
     def compute_loss(self, X, y):
-        X = list(map(self.transformer.transform, X))
+        X = self.transform_X(X)
         X = self.format_X(X)
         y = self.format_y(y)
 

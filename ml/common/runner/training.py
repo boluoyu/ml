@@ -108,6 +108,12 @@ class TrainingRunner:
         with open(training_statistics_file_name, 'w') as f:
             f.write(json.dumps(self.training_statistics))
 
+
+    def save_training_stats_figure(self, fig, epoch):
+        figure_file_name = self.get_training_statistics_figure_name(epoch_num=epoch)
+        fig.savefig(figure_file_name)
+
+
     def save_evaluation_data(self, evaluation_data, epoch_num):
         evaluation_data_file_name = self.get_evaluation_data_file_name(epoch_num)
 
@@ -166,7 +172,3 @@ class TrainingRunner:
         cf = pd.DataFrame(epoch_training_loss, columns=['step', 'training_loss', 'cv_loss'])
         fig = cf.plot(x='step', y=['training_loss', 'cv_loss']).get_figure()
         return fig
-
-    def save_training_stats_figure(self, fig, epoch):
-        figure_file_name = self.get_training_statistics_figure_name(epoch_num=epoch)
-        fig.savefig(figure_file_name)
