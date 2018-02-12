@@ -2,6 +2,8 @@ from keras.layers import Dense, Flatten, Activation, Conv2D
 from keras.models import Sequential
 from keras.optimizers import Adam
 
+from ml.common.classifier.keras import KerasClassifier
+from ml.common.evaluator.base import Evaluator
 from ml.image.experiment.base import ImageExperiment
 
 
@@ -36,3 +38,12 @@ class ConvnetKerasImageExperiment(ImageExperiment):
 
         print(model.summary())
         return model
+
+    def get_classifier(self):
+        return KerasClassifier(
+            model=self.get_model(),
+            transformer=self.transformer
+        )
+
+    def get_evaluator(self):
+        return Evaluator()

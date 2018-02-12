@@ -18,8 +18,7 @@ def main(model_path, temp_folder_path, input_folder_path, classes, num_predictio
         top=num_predictions,  # number of top predictions to show in the gui (default 5)
         temp_folder=temp_folder_path,
         input_folder=input_folder_path,
-        # the localhost port the dashboard is to be served on
-        port=5000
+        port=5000 # the localhost port the dashboard is to be served on
     )
 
 

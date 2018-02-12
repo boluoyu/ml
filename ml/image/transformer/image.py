@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from ml.image.transformer.base import Transformer
+from ml.common.transformer.base import Transformer
 
 
 class ImageTransformer(Transformer):
@@ -12,9 +12,12 @@ class ImageTransformer(Transformer):
         self.height = height
         self.num_channels = num_channels
 
-    def transform(self, image):
-        image = self.resize(image, target_width=self.width, target_height=self.height).astype(np.float32)
-        return image / 255
+    def transform_X(self, X):
+        X = self.resize(X, target_width=self.width, target_height=self.height).astype(np.float32)
+        return X / 255
+
+    def transform_y(self, y):
+        return y
 
     def resize(self, image, target_width, target_height):
         width, height = image.shape[1], image.shape[0]

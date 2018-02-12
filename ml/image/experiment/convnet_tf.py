@@ -1,6 +1,7 @@
 import tensorflow as tf
 
-from ml.common.classifier.tensorflow import TensorflowModel
+from ml.common.classifier.tensorflow import TensorflowModel, TensorflowClassifier
+from ml.common.evaluator.base import Evaluator
 from ml.image.experiment.base import ImageExperiment
 
 
@@ -86,3 +87,12 @@ class ConvnetTensorflowImageExperiment(ImageExperiment):
                 targets=self.targets,
                 predictions=self.predictions
             )
+
+    def get_classifier(self):
+        return TensorflowClassifier(
+            model=self.get_model(),
+            transformer=self.transformer
+        )
+
+    def get_evaluator(self):
+        return Evaluator()

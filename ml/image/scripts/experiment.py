@@ -1,19 +1,13 @@
 from argparse import ArgumentParser
 
-from ml.common.evaluator.registry import EVALUATOR_REGISTRY
 from ml.common.helper.data_generator import DataGenerator
 from ml.image.experiment.registry import EXPERIMENT_REGISTRY
-from ml.image.classifier.registry import CLASSIFIER_REGISTRY
 from ml.image.service.load import ImageLoader
-from ml.image.transformer.registry import TRANSFORMER_REGISTRY
 
 
-def main(experiment_name, class_map_file_path, classifier_name, transformer_name, evaluator_name, model_dir, training_data_file_path,
+def main(experiment_name, class_map_file_path, model_dir, training_data_file_path,
          validation_file_path, batch_size, num_epochs, checkpoint_step_num, validation_step_num, num_steps, verbose):
-    classifier_cls = CLASSIFIER_REGISTRY[classifier_name]
-    evaluator_cls = EVALUATOR_REGISTRY[evaluator_name]
     experiment_cls = EXPERIMENT_REGISTRY[experiment_name]
-    transformer_cls = TRANSFORMER_REGISTRY[transformer_name]
 
     data_generator = DataGenerator(
         training_data_file_path=training_data_file_path,
@@ -23,9 +17,6 @@ def main(experiment_name, class_map_file_path, classifier_name, transformer_name
 
     experiment = experiment_cls(
         class_map_file_path=class_map_file_path,
-        classifier_cls=classifier_cls,
-        transformer_cls=transformer_cls,
-        evaluator_cls=evaluator_cls,
         data_generator=data_generator,
         model_dir=model_dir,
         batch_size=batch_size,
@@ -42,9 +33,6 @@ def main(experiment_name, class_map_file_path, classifier_name, transformer_name
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--experiment_name', required=True)
-    parser.add_argument('--classifier_name', required=True)
-    parser.add_argument('--transformer_name', required=True)
-    parser.add_argument('--evaluator_name', required=True)
     parser.add_argument('--model_dir', required=True)
     parser.add_argument('--class_map_file_path', required=True)
     parser.add_argument('--training_data_file_path', required=True)
@@ -61,9 +49,6 @@ if __name__ == '__main__':
     main(
         class_map_file_path=args.class_map_file_path,
         experiment_name=args.experiment_name,
-        classifier_name=args.classifier_name,
-        evaluator_name=args.evaluator_name,
-        transformer_name=args.transformer_name,
         model_dir=args.model_dir,
         training_data_file_path=args.training_data_file_path,
         validation_file_path=args.validation_data_file_path,
