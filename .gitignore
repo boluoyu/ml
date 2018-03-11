@@ -10,6 +10,7 @@ __pycache__/
 
 # Distribution / packaging
 *tldr*
+.idea*
 .Python
 build/
 ml/image/data/
