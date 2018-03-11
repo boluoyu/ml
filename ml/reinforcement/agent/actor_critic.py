@@ -123,7 +123,8 @@ class ActorCriticAgent(MLAgent):
         actor_target_weights = self.target_actor.model.get_weights()
 
         for i in range(len(actor_target_weights)):
-            actor_target_weights[i] = actor_model_weights[i]
+            weights = actor_model_weights * self.tau + actor_target_weights * (1-self.tau)
+            actor_target_weights[i] = weights
         self.target_actor.model.set_weights(actor_target_weights)
 
     def update_critic_target(self):
@@ -131,7 +132,8 @@ class ActorCriticAgent(MLAgent):
         critic_target_weights = self.target_critic.model.get_weights()
 
         for i in range(len(critic_target_weights)):
-            critic_target_weights[i] = critic_model_weights[i]
+            weights = critic_model_weights * self.tau + critic_target_weights * (1-self.tau)
+            critic_target_weights[i] = weights
         self.target_critic.model.set_weights(critic_target_weights)
 
     def update_target_models(self):

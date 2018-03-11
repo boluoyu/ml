@@ -1,3 +1,5 @@
+import gym
+import universe
 from argparse import ArgumentParser
 
 from ml.reinforcement.experiment.registry import EXPERIMENT_REGISTRY

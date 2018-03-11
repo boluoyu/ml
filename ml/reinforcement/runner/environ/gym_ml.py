@@ -1,4 +1,5 @@
 import gym
+import universe
 
 from ml.reinforcement.runner.environ.ml import MLEnvironmentRunner
 

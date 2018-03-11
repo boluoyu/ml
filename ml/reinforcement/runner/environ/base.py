@@ -125,6 +125,9 @@ class EnvironmentRunner:
         if done:
             reward = -100
 
+        if current_observation is None or previous_observation is None:
+            return
+
         self.env_history.append(
             {
                 'observation': previous_observation,

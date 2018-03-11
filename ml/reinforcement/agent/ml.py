@@ -31,7 +31,7 @@ class MLAgent(Agent):
     def get_action(self, action, current_observation, previous_observation, reward, done, info):
         random_decimal = np.random.rand()
 
-        if random_decimal <= self.epsilon:
+        if current_observation is None or random_decimal <= self.epsilon:
             action = random.choice(self.actions)
             logger.debug('Random choice action %s', action)
         else:

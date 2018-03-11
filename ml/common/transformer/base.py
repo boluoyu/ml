@@ -15,6 +15,7 @@ class Transformer:
         return np.reshape(X, [num_samples, num_features])
 
     def format_y(self, y):
+        print('y', y)
         num_samples = len(y)
         num_targets = len(y[0])
 

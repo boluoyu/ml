@@ -14,6 +14,7 @@ class KerasClassifier(Classifier):
 
     def fit(self, X, y, **kwargs):
         X = self.transform_X(X)
+        y = self.transform_y(y)
         X = self.format_X(X)
         y = self.format_y(y)
         model_history = self.model.fit(X, y, **kwargs)
@@ -21,6 +22,7 @@ class KerasClassifier(Classifier):
 
     def compute_loss(self, X, y):
         X = self.transform_X(X)
+        y = self.transform_y(y)
         X = self.format_X(X)
         y = self.format_y(y)
         return self.model.evaluate(X, y)
