@@ -12,6 +12,8 @@ __pycache__/
 *tldr*
 .idea*
 .Python
+*.tsv
+*.json
 build/
 ml/image/data/
 ml/image/model/
