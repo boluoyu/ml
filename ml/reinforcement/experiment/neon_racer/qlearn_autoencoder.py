@@ -1,3 +1,5 @@
+import gym
+import universe
 from ml.reinforcement.transformer.autoencoder_transformer import AutoencoderTransformer
 from ml.common.classifier.keras import KerasClassifier
 from ml.reinforcement.agent.qlearn_autoencoder import AutoencoderQlearnAgent

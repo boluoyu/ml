@@ -93,7 +93,7 @@ class KerasModel(BaseModel):
         X = []
         for raw_im in raw_inputs:
             raw_im = cv2.cvtColor(np.array(raw_im), cv2.COLOR_RGB2BGR)
-            X.append(self.classifier.transformer.transform(raw_im))
+            X.append(self.classifier.transformer.transform_X(raw_im))
 
         X = self.classifier.format_X(X)
         return X

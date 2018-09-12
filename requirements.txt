@@ -21,3 +21,5 @@ universe==0.21.5
 gym==0.7.1
 wordcloud==1.4.1
 tqdm==4.19.6
+keras-metrics==0.0.3
+imbalanced-learn==0.3.3

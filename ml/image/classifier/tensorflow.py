@@ -19,4 +19,4 @@ class ImageTensorflowClassifier(TensorflowClassifier):
         return np.reshape(X, [num_samples, self.height, self.width, self.num_channels])
 
     def transform_X(self, X):
-        return list(map(self.transformer.transform, X))
+        return list(map(self.transformer.transform_X, X))

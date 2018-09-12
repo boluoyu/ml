@@ -21,6 +21,5 @@ def add_x509_headers(headers):
 
 def get_banjo_session():
     session = Session()
-    x509_headers = add_x509_headers({})
-    session.headers.update(x509_headers)
+    add_x509_headers(session.headers)
     return session

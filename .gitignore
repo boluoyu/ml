@@ -22,6 +22,10 @@ ml/common/model/
 ml/text/data/
 ml/reinforcement/model/
 ml/reinforcement/data/
+*.png
+*/notebooks
+data/
+model_files/
 develop-eggs/
 dist/
 downloads/
