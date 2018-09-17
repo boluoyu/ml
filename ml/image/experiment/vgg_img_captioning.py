@@ -1,5 +1,7 @@
-from keras import Input
+from keras import Input, Model
 from keras.applications import VGG16
+from keras.layers import Dropout, Dense, Embedding, LSTM, add
+from keras.optimizers import Adam
 
 
 class VGGImageCaptioningExperiment:

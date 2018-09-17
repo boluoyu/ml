@@ -1,7 +1,6 @@
 from abc import abstractmethod, ABCMeta
 import re
 import os
-import pickle
 import string
 from argparse import ArgumentParser
 from random import shuffle
